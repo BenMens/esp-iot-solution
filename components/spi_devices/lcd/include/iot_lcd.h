@@ -69,7 +69,7 @@ typedef enum {
     LCD_MOD_ILI9341 = 0,
     LCD_MOD_ST7789 = 1,
     LCD_MOD_AUTO_DET = 3,
-    LCD_MOD_ST7789_MODE3_240x240 = 4,
+    LCD_MOD_ST7789_MODE3_240x240_GREENTAB = 4,
 } lcd_model_t;
 
 /**

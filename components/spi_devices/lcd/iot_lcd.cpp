@@ -72,6 +72,8 @@ CEspLcd::CEspLcd(lcd_conf_t* lcd_conf, int height, int width, bool dma_en, int d
     spi_mux = xSemaphoreCreateRecursiveMutex();
     m_dma_chan = dma_chan;
     setSpiBus(lcd_conf);
+
+    invertDisplay(0);
 }
 
 CEspLcd::~CEspLcd()
@@ -365,9 +367,9 @@ void CEspLcd::setRotation(uint8_t m)
     rotation = m % 4;  //Can't be more than 3
     switch (rotation) {
     case 0:
-        if (m_lcd_model == LCD_MOD_ST7789_MODE3_240x240) {
+        if (m_lcd_model == LCD_MOD_ST7789_MODE3_240x240_GREENTAB) {
             scrollTo(0);
-            data = MADCTL_BGR;
+            data = MADCTL_RGB;
         } else {
             data = MADCTL_MX | MADCTL_BGR;
         }
@@ -375,9 +377,9 @@ void CEspLcd::setRotation(uint8_t m)
         _height = m_height;
         break;
     case 1:
-        if (m_lcd_model == LCD_MOD_ST7789_MODE3_240x240) {
+        if (m_lcd_model == LCD_MOD_ST7789_MODE3_240x240_GREENTAB) {
             scrollTo(0);
-            data = MADCTL_MV | MADCTL_MX | MADCTL_BGR;
+            data = MADCTL_MV | MADCTL_MX | MADCTL_RGB;
         } else {
             data = MADCTL_MV | MADCTL_BGR;
         }
@@ -385,9 +387,9 @@ void CEspLcd::setRotation(uint8_t m)
         _height = m_width;
         break;
     case 2:
-        if (m_lcd_model == LCD_MOD_ST7789_MODE3_240x240) {
+        if (m_lcd_model == LCD_MOD_ST7789_MODE3_240x240_GREENTAB) {
             scrollTo(80);
-            data = MADCTL_MY | MADCTL_MX | MADCTL_BGR;
+            data = MADCTL_MY | MADCTL_MX | MADCTL_RGB;
         } else {
             data = MADCTL_MY | MADCTL_BGR;
         }
@@ -395,9 +397,9 @@ void CEspLcd::setRotation(uint8_t m)
         _height = m_height;
         break;
     case 3:
-        if (m_lcd_model == LCD_MOD_ST7789_MODE3_240x240) {
+        if (m_lcd_model == LCD_MOD_ST7789_MODE3_240x240_GREENTAB) {
             scrollTo(80);
-            data = MADCTL_MY | MADCTL_MV | MADCTL_BGR;
+            data = MADCTL_MY | MADCTL_MV | MADCTL_RGB;
         } else {
             data = MADCTL_MX | MADCTL_MY | MADCTL_MV | MADCTL_BGR;
         }
@@ -409,8 +411,12 @@ void CEspLcd::setRotation(uint8_t m)
 }
 
 void CEspLcd::invertDisplay(bool i)
-{
-    transmitCmd(i ? LCD_INVON : LCD_INVOFF);
+{   
+    if (m_lcd_model == LCD_MOD_ST7789_MODE3_240x240_GREENTAB) {
+        transmitCmd(i ? LCD_INVOFF : LCD_INVON);
+    } else {
+        transmitCmd(i ? LCD_INVON : LCD_INVOFF);
+    }
 }
 
 

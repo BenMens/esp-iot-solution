@@ -166,7 +166,7 @@ uint32_t lcd_init(lcd_conf_t* lcd_conf, spi_device_handle_t *spi_wr_dev, lcd_dc_
     }
 
     int mode = 0;
-    if (lcd_conf->lcd_model == LCD_MOD_ST7789_MODE3_240x240) {
+    if (lcd_conf->lcd_model == LCD_MOD_ST7789_MODE3_240x240_GREENTAB) {
         mode = 3;
     }
 
@@ -192,7 +192,7 @@ uint32_t lcd_init(lcd_conf_t* lcd_conf, spi_device_handle_t *spi_wr_dev, lcd_dc_
     const lcd_init_cmd_t* lcd_init_cmds = NULL;
     if(lcd_conf->lcd_model == LCD_MOD_ST7789) {
         lcd_init_cmds = st7789_init_cmds;
-    } else if(lcd_conf->lcd_model == LCD_MOD_ST7789_MODE3_240x240) {
+    } else if(lcd_conf->lcd_model == LCD_MOD_ST7789_MODE3_240x240_GREENTAB) {
         lcd_init_cmds = st7789_init_cmds;
     } else if(lcd_conf->lcd_model == LCD_MOD_ILI9341) {
         lcd_init_cmds = ili_init_cmds;
@@ -220,6 +220,7 @@ uint32_t lcd_init(lcd_conf_t* lcd_conf, spi_device_handle_t *spi_wr_dev, lcd_dc_
         gpio_set_direction(lcd_conf->pin_num_bckl, GPIO_MODE_OUTPUT);
         gpio_set_level(lcd_conf->pin_num_bckl, (lcd_conf->bckl_active_level) & 0x1);
     }
+    
     return lcd_id;
 }
 
